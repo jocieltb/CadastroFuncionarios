@@ -47,11 +47,13 @@ namespace GerenciamentoDeFuncionarios.Controllers
         // GET: Funcionarios/Create
         public IActionResult Create()
         {
-            ViewData["Lotacao"] =
-                 new SelectList(
-                     _context.Departamento
-                     , "Id",
-                     "Nome");
+            var item = (from dep in _context.Departamento
+                       select (new SelectListItem() { Value = dep.Id.ToString(), Text = dep.Nome, Selected = false })).ToList();
+
+
+            item.Add(new SelectListItem() { Text = "", Value = "0" });
+
+            ViewData["Lotacao"] = item;
             return View();
         }
 
@@ -68,6 +70,11 @@ namespace GerenciamentoDeFuncionarios.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Lotacao"] =
+                 new SelectList(
+                     _context.Departamento
+                     , "Id",
+                     "Nome", funcionario.LotacaoId);
             return View(funcionario);
         }
 
@@ -84,6 +91,11 @@ namespace GerenciamentoDeFuncionarios.Controllers
             {
                 return NotFound();
             }
+            ViewData["Lotacao"] =
+                 new SelectList(
+                     _context.Departamento
+                     , "Id",
+                     "Nome", funcionario.LotacaoId);
             return View(funcionario);
         }
 
@@ -119,6 +131,11 @@ namespace GerenciamentoDeFuncionarios.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Lotacao"] =
+                 new SelectList(
+                     _context.Departamento
+                     , "Id",
+                     "Nome", funcionario.LotacaoId);
             return View(funcionario);
         }
 
